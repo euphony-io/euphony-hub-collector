@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">euphony-collector</string>
+    <string name="collector_view">Collector</string>
+    <string name="result_view">Result</string>
+    <string name="setting_view">Setting</string>
 </resources>
