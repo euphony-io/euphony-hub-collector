@@ -1,12 +1,9 @@
 package co.jbear.euphony_collector.ui.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.SpeakerPhone
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,12 +15,13 @@ import co.jbear.euphony_collector.ui.theme.Typography
 fun CustomTextField(
     text: String,
     onTextChanged: (String) -> Unit,
-    modifier: Modifier = Modifier
+    trailingIcon: @Composable()(() -> Unit),
+    modifier: Modifier = Modifier,
 ) {
     TextField(
         modifier = modifier,
         shape = RoundedCornerShape(14.dp),
-        trailingIcon = { Icon(Icons.Outlined.SpeakerPhone, "", tint = Color.Black) },
+        trailingIcon = trailingIcon,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = LightSkyBlue,
             focusedIndicatorColor = Color.Transparent,
