@@ -1,43 +1,62 @@
 package co.jbear.euphony_collector
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.ActivityCompat
 import co.jbear.euphony_collector.ui.theme.EuphonyCollectorTheme
+import co.jbear.euphony_collector.ui.view.Home
+import dagger.hilt.android.AndroidEntryPoint
 
+@ExperimentalMaterialApi
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val permissions: Array<String> = arrayOf(
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestPermissions(permissions)
+
         setContent {
             EuphonyCollectorTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    Home()
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
+    private fun requestPermissions(permissions: Array<String>) {
+        val denied = permissions.count { checkSelfPermission(it) == PackageManager.PERMISSION_DENIED }
+        if (denied > 0) {
+            ActivityCompat.requestPermissions(this, permissions, 0)
+        }
+    }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    EuphonyCollectorTheme {
-        Greeting("Android")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 0) {
+            val denied = permissions.count { checkSelfPermission(it) == PackageManager.PERMISSION_DENIED }
+            if (denied > 0) {
+                Toast.makeText(applicationContext, "You should get permissions to use euphony-collector", Toast.LENGTH_LONG).show()
+                finish()
+            }
+        }
     }
 }
