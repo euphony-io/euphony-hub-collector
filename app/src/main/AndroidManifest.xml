@@ -3,6 +3,7 @@
     package="co.jbear.euphony_collector">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".EuphonyCollector"
