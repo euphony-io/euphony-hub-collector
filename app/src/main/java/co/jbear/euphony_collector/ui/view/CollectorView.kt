@@ -1,15 +1,12 @@
 package co.jbear.euphony_collector.ui.view
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SpeakerPhone
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -23,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import co.jbear.euphony_collector.presentation.collector.CollectorViewModel
 import co.jbear.euphony_collector.ui.components.CustomTextField
 import co.jbear.euphony_collector.ui.theme.EuphonyCollectorTheme
+import co.jbear.euphony_collector.ui.theme.SkyBlue
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
@@ -31,32 +29,15 @@ fun CollectorView(
     viewModel: CollectorViewModel = hiltViewModel()
 ) {
 
-    var textToSend by rememberSaveable { mutableStateOf("") }
-    var sendStatus by rememberSaveable { mutableStateOf(false) }
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Header()
-        CustomTextField(
-            text = textToSend,
-            onTextChanged = { textToSend = it },
-            trailingIcon = {
-                if (textToSend.isNotEmpty()) {
-                    IconButton(onClick = {
-                        sendStatus = !sendStatus
-                    }) {
-                        Icon(Icons.Outlined.SpeakerPhone, "", tint = Color.Black)
-                    }
-                }
-            },
-            modifier = Modifier
-                .padding(top = 40.dp)
-                .height(48.dp)
-        )
+        Speaker(viewModel)
     }
+    Listener(viewModel)
 }
 
 @Composable
@@ -79,6 +60,68 @@ private fun Header() {
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.body1
     )
+}
+
+@Composable
+private fun Speaker(viewModel: CollectorViewModel) {
+    var textToSend by rememberSaveable { mutableStateOf("") }
+
+    CustomTextField(
+        text = textToSend,
+        onTextChanged = { textToSend = it },
+        trailingIcon = {
+            if (textToSend.isNotEmpty()) {
+                IconButton(onClick = {
+                    viewModel.listen()
+                    viewModel.speak(textToSend)
+                }) {
+                    Icon(Icons.Outlined.SpeakerPhone, "", tint = Color.Black)
+                }
+            }
+        },
+        modifier = Modifier
+            .padding(top = 40.dp)
+            .height(48.dp)
+    )
+}
+
+@Composable
+private fun Listener(viewModel: CollectorViewModel) {
+    val isProcessing by viewModel.isProcessing.observeAsState(false)
+    val listenResult by viewModel.listenResult.observeAsState("")
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (isProcessing) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(80.dp),
+                color = SkyBlue,
+                strokeWidth = 10.dp
+            )
+        } else if (listenResult.isNotEmpty()) {
+            val color = if (viewModel.getResult().equals("SUCCESS")) {
+                SkyBlue
+            } else {
+                Color.Red
+            }
+
+            Text(
+                text = viewModel.getResult(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.h3,
+                color = color
+            )
+            Text(
+                text = "Listen Result is $listenResult",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.body1
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
