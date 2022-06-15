@@ -1,15 +1,29 @@
 package co.jbear.euphony_collector.presentation.collector
 
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import co.jbear.euphony_collector.data.repository.PreferenceRepository
+import co.jbear.euphony_collector.domain.entity.AppPreference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import euphony.lib.receiver.AcousticSensor
 import euphony.lib.receiver.EuRxManager
 import euphony.lib.transmitter.EuTxManager
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class CollectorViewModel @Inject constructor() : ViewModel() {
+class CollectorViewModel @Inject constructor(
+    val preferenceRepository: PreferenceRepository
+) : ViewModel() {
+
+    var preference by mutableStateOf(AppPreference())
+        private set
 
     private val _isSpeaking = MutableLiveData(false)
     val isSpeaking get() = _isSpeaking
@@ -31,6 +45,13 @@ class CollectorViewModel @Inject constructor() : ViewModel() {
     }
     private val rxManager : EuRxManager by lazy {
         EuRxManager()
+    }
+
+    init {
+        preferenceRepository.data.onEach {
+            preference = it
+            Log.i(TAG, "init preference: $it")
+        }.launchIn(viewModelScope)
     }
 
     fun speak(textToSend: String) {

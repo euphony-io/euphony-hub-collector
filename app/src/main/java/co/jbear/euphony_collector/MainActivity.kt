@@ -10,13 +10,18 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.core.app.ActivityCompat
+import co.jbear.euphony_collector.data.repository.PreferenceRepository
 import co.jbear.euphony_collector.ui.theme.EuphonyCollectorTheme
 import co.jbear.euphony_collector.ui.view.Home
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var preferenceRepository: PreferenceRepository
 
     private val permissions: Array<String> = arrayOf(
         Manifest.permission.RECORD_AUDIO,

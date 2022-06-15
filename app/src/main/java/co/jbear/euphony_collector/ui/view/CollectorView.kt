@@ -13,10 +13,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import co.jbear.euphony_collector.data.repository.PreferenceRepository
 import co.jbear.euphony_collector.presentation.collector.CollectorViewModel
 import co.jbear.euphony_collector.ui.components.CustomTextField
 import co.jbear.euphony_collector.ui.theme.EuphonyCollectorTheme
@@ -116,9 +118,9 @@ private fun Listener(viewModel: CollectorViewModel) {
                 color = color
             )
             Text(
-                text = "Listen Result is $listenResult",
+                text = "\"$listenResult\"",
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.body2
             )
         }
     }
@@ -128,6 +130,8 @@ private fun Listener(viewModel: CollectorViewModel) {
 @Composable
 fun CollectorPreview() {
     EuphonyCollectorTheme {
-        CollectorView(viewModel = CollectorViewModel())
+        CollectorView(
+            viewModel = CollectorViewModel(PreferenceRepository(LocalContext.current))
+        )
     }
 }
