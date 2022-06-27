@@ -1,14 +1,12 @@
 package co.jbear.euphony_collector.ui.view
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import co.jbear.euphony_collector.data.repository.PreferenceRepository
 import co.jbear.euphony_collector.presentation.setting.SettingViewModel
+import co.jbear.euphony_collector.ui.theme.EuphonyCollectorTheme
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
@@ -16,11 +14,15 @@ import com.ramcosta.composedestinations.annotation.Destination
 fun SettingView(
     viewModel: SettingViewModel = hiltViewModel()
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("setting")
+    SettingItemList(viewModel = viewModel)
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SettingPreview() {
+    EuphonyCollectorTheme {
+        SettingView(
+            viewModel = SettingViewModel(PreferenceRepository(LocalContext.current))
+        )
     }
 }
