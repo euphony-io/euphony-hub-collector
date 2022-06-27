@@ -3,6 +3,7 @@ package co.jbear.euphony_collector.ui.view
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.PauseCircleFilled
 import androidx.compose.material.icons.outlined.SpeakerPhone
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -66,6 +67,7 @@ private fun Header() {
 
 @Composable
 private fun Speaker(viewModel: CollectorViewModel) {
+    val isListening by viewModel.isListening.observeAsState(false)
     var textToSend by rememberSaveable { mutableStateOf("") }
 
     CustomTextField(
@@ -77,12 +79,17 @@ private fun Speaker(viewModel: CollectorViewModel) {
                     viewModel.listen()
                     viewModel.speak(textToSend)
                 }) {
-                    Icon(Icons.Outlined.SpeakerPhone, "", tint = Color.Black)
+                    if (isListening) {
+                        Icon(Icons.Outlined.PauseCircleFilled, "", tint = Color.Black)
+                    } else {
+                        Icon(Icons.Outlined.SpeakerPhone, "", tint = Color.Black)
+                    }
                 }
             }
         },
         modifier = Modifier
             .padding(top = 40.dp)
+            .width(300.dp)
             .height(48.dp)
     )
 }

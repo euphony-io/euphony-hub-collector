@@ -56,6 +56,7 @@ class CollectorViewModel @Inject constructor(
 
     fun speak(textToSend: String) {
         if (isSpeaking.value == false) {
+            _isProcessing.postValue(true)
             _listenResult.postValue("")
             _speakRequest.postValue(textToSend)
             _isSpeaking.postValue(true)
@@ -63,6 +64,7 @@ class CollectorViewModel @Inject constructor(
             txManager.euInitTransmit(textToSend)
             txManager.process(-1)
         } else {
+            _isProcessing.postValue(false)
             _isSpeaking.postValue(false)
             txManager.stop()
         }
@@ -71,6 +73,7 @@ class CollectorViewModel @Inject constructor(
     fun listen() {
         if (isListening.value == true) {
             rxManager.finish()
+            _isProcessing.postValue(false)
             _isListening.postValue(false)
         } else {
             rxManager.listen()
