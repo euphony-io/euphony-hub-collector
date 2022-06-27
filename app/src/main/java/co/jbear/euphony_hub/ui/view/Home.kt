@@ -1,10 +1,13 @@
 package co.jbear.euphony_hub.ui.view
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import co.jbear.euphony_hub.ui.components.BottomMenuContent
@@ -31,7 +34,9 @@ fun Home() {
             },
             scaffoldState = scaffoldState
         ) {
-            DestinationsNavHost(navGraph = NavGraphs.root, navController = navController)
+            Box(modifier = Modifier.padding(it)) {
+                DestinationsNavHost(navGraph = NavGraphs.root, navController = navController)
+            }
         }
     }
 }

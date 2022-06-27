@@ -9,8 +9,11 @@ class FakeDataRepository : DataRepository {
 
     init {
         val currentTime = System.currentTimeMillis() / 1000
-        for(i in 0..10) {
-            list.add(mockData.copy(timestamp = currentTime + i))
+        for(i in 0..15) {
+            list.add(mockData.copy(
+                timestamp = currentTime + i*1000,
+                data = ('A'..'z').map { it }.shuffled().subList(0, 8).joinToString("")
+            ))
         }
     }
 
