@@ -13,5 +13,5 @@ dependencyResolutionManagement {
         jcenter()
     }
 }
-rootProject.name = "euphony-collector"
+rootProject.name = "euphony-hub"
 include ':app'
