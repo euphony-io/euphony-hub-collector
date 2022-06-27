@@ -17,7 +17,6 @@ import co.jbear.euphony_hub.domain.entity.FileType
 import co.jbear.euphony_hub.domain.entity.ModulationType
 import co.jbear.euphony_hub.presentation.setting.SettingViewModel
 import co.jbear.euphony_hub.ui.components.DropDownPreference
-import co.jbear.euphony_hub.ui.components.FullscreenPreference
 import co.jbear.euphony_hub.ui.components.RegularPreference
 import co.jbear.euphony_hub.ui.components.SettingCategory
 import co.jbear.euphony_hub.ui.theme.EuphonyHubTheme
@@ -126,26 +125,4 @@ fun SettingItemListPreview() {
     EuphonyHubTheme {
         SettingItemList(viewModel = SettingViewModel(PreferenceRepository(LocalContext.current)))
     }
-}
-
-@Composable
-fun test(viewModel: SettingViewModel) {
-    val preference = viewModel.preference
-    val modulationType = remember {
-        listOf(
-            ModulationType.FSK.name to (ModulationType.FSK.name to ModulationType.FSK.name),
-            ModulationType.ASK.name to (ModulationType.ASK.name to ModulationType.ASK.name),
-            ModulationType.CPFSK.name to (ModulationType.CPFSK.name to ModulationType.CPFSK.name)
-        )
-    }
-
-    FullscreenPreference(
-        title = "Modulation Type",
-        items = modulationType,
-        selectedItem = preference.modulationType.toString(),
-        onItemSelected = {
-            viewModel.updatePreference { it.copy(modulationType = ModulationType.valueOf(it.toString())) }
-        },
-        onNavigateBack = {}
-    )
 }
