@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import co.jbear.euphony_hub.data.repository.PreferenceRepository
 import co.jbear.euphony_hub.domain.entity.BaseType
 import co.jbear.euphony_hub.domain.entity.CharsetType
+import co.jbear.euphony_hub.domain.entity.FileType
 import co.jbear.euphony_hub.domain.entity.ModulationType
 import co.jbear.euphony_hub.presentation.setting.SettingViewModel
 import co.jbear.euphony_hub.ui.components.DropDownPreference
@@ -45,6 +46,12 @@ fun SettingItemList(
         listOf(
             CharsetType.ASCII to CharsetType.ASCII.name,
             CharsetType.UTF8 to CharsetType.UTF8.name
+        )
+    }
+    val fileType = remember {
+        listOf(
+            FileType.PCM to "PCM",
+            FileType.WAV to "WAV"
         )
     }
 
@@ -96,6 +103,20 @@ fun SettingItemList(
                 }
             )
         }
+
+        item { Divider() }
+        item {
+            DropDownPreference(
+                title = "File Type",
+                items = fileType,
+                selectedItem = viewModel.preference.fileType,
+                onItemSelected = { fileType ->
+                    viewModel.updatePreference { it.copy(fileType = fileType) }
+                }
+            )
+        }
+
+        item { Divider() }
     }
 }
 
