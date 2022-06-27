@@ -14,5 +14,8 @@ data class AppPreference(
     val baseType: BaseType = BaseType.BASE16,
 
     @field:Json(name = "charset_type")
-    val charsetType: CharsetType = CharsetType.ASCII
+    val charsetType: CharsetType = CharsetType.ASCII,
+
+    @field:Json(name = "file_type")
+    val fileType: FileType = FileType.PCM
 )
