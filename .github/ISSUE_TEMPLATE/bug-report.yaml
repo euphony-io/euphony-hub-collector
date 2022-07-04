@@ -11,6 +11,14 @@ body:
     options:
     - label: I have searched the existing issues.
       required: true
+
+- type: checkboxes
+  attributes:
+    label: Would you like to work on the issue?
+    description: Please tick this checkbox, if you want this issue assigned to you.
+    options:
+    - label: Assign this issue to me.
+      required: false
       
 - type: textarea
   attributes:
@@ -40,7 +48,7 @@ body:
         - Version:
     render: markdown
   validations:
-    required: false
+    required: true
     
 - type: textarea
   attributes:
