@@ -1,5 +1,6 @@
 package co.jbear.euphony_hub.presentation.collector
 
+import android.os.Environment
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,12 +16,15 @@ import euphony.lib.receiver.EuRxManager
 import euphony.lib.transmitter.EuTxManager
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class CollectorViewModel @Inject constructor(
     val preferenceRepository: PreferenceRepository
 ) : ViewModel() {
+
+    lateinit var destFile: File
 
     var preference by mutableStateOf(AppPreference())
         private set
@@ -76,6 +80,7 @@ class CollectorViewModel @Inject constructor(
             _isProcessing.postValue(false)
             _isListening.postValue(false)
         } else {
+            destFile = createAudioFile()
             rxManager.listen()
             _isProcessing.postValue(true)
             _isListening.postValue(true)
@@ -94,6 +99,10 @@ class CollectorViewModel @Inject constructor(
             return "SUCCESS"
         }
         return "FAIL"
+    }
+
+    private fun createAudioFile(): File {
+        return File(Environment.getExternalStorageDirectory(), "/EuphonyHubCollector/${System.currentTimeMillis()}.pcm")
     }
 
     companion object {
