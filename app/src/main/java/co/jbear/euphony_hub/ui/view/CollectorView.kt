@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,7 +48,7 @@ fun CollectorView(
 private fun Header() {
     Text(
         modifier = Modifier.padding(top = 80.dp),
-        text = "Euphony Hub",
+        text = "Euphony Hub Collector",
         style = MaterialTheme.typography.h3
     )
 
@@ -57,7 +58,7 @@ private fun Header() {
             start = 30.dp,
             end = 30.dp,
         ),
-        text = "Euphony Hub provides both speaker and listener mode, \n" +
+        text = "Euphony Hub Collector provides both speaker and listener mode, \n" +
                "so you can send data using euphony and get the result. \n" +
                "To send clearly, please set device volume to max.",
         textAlign = TextAlign.Center,
@@ -80,14 +81,15 @@ private fun Speaker(viewModel: CollectorViewModel) {
                     viewModel.speak(textToSend)
                 }) {
                     if (isListening) {
-                        Icon(Icons.Outlined.PauseCircleFilled, "", tint = Color.Black)
+                        Icon(Icons.Outlined.PauseCircleFilled, "", tint = Color.Black, modifier = Modifier.testTag("pauseButton"))
                     } else {
-                        Icon(Icons.Outlined.SpeakerPhone, "", tint = Color.Black)
+                        Icon(Icons.Outlined.SpeakerPhone, "", tint = Color.Black, modifier = Modifier.testTag("speakerButton"))
                     }
                 }
             }
         },
         modifier = Modifier
+            .testTag("textToSend")
             .padding(top = 40.dp)
             .width(300.dp)
             .height(48.dp)
