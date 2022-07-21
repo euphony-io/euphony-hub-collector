@@ -4,7 +4,7 @@ import co.jbear.euphony_hub.domain.entity.CollectorLog
 
 class FakeDataRepository : DataRepository {
 
-    val list = mutableListOf<CollectorLog>()
+    private val list = mutableListOf<CollectorLog>()
     private val mockData = CollectorLog.getMockCollectorLog()
 
     init {
