@@ -13,10 +13,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import co.jbear.euphony_hub.data.repository.PreferenceRepository
 import co.jbear.euphony_hub.domain.entity.BaseType
 import co.jbear.euphony_hub.domain.entity.CharsetType
+import co.jbear.euphony_hub.domain.entity.FileType
 import co.jbear.euphony_hub.domain.entity.ModulationType
 import co.jbear.euphony_hub.presentation.setting.SettingViewModel
 import co.jbear.euphony_hub.ui.components.DropDownPreference
-import co.jbear.euphony_hub.ui.components.FullscreenPreference
 import co.jbear.euphony_hub.ui.components.RegularPreference
 import co.jbear.euphony_hub.ui.components.SettingCategory
 import co.jbear.euphony_hub.ui.theme.EuphonyHubTheme
@@ -45,6 +45,12 @@ fun SettingItemList(
         listOf(
             CharsetType.ASCII to CharsetType.ASCII.name,
             CharsetType.UTF8 to CharsetType.UTF8.name
+        )
+    }
+    val fileType = remember {
+        listOf(
+            FileType.PCM to "PCM",
+            FileType.WAV to "WAV"
         )
     }
 
@@ -96,6 +102,20 @@ fun SettingItemList(
                 }
             )
         }
+
+        item { Divider() }
+        item {
+            DropDownPreference(
+                title = "File Type",
+                items = fileType,
+                selectedItem = viewModel.preference.fileType,
+                onItemSelected = { fileType ->
+                    viewModel.updatePreference { it.copy(fileType = fileType) }
+                }
+            )
+        }
+
+        item { Divider() }
     }
 }
 
@@ -105,26 +125,4 @@ fun SettingItemListPreview() {
     EuphonyHubTheme {
         SettingItemList(viewModel = SettingViewModel(PreferenceRepository(LocalContext.current)))
     }
-}
-
-@Composable
-fun test(viewModel: SettingViewModel) {
-    val preference = viewModel.preference
-    val modulationType = remember {
-        listOf(
-            ModulationType.FSK.name to (ModulationType.FSK.name to ModulationType.FSK.name),
-            ModulationType.ASK.name to (ModulationType.ASK.name to ModulationType.ASK.name),
-            ModulationType.CPFSK.name to (ModulationType.CPFSK.name to ModulationType.CPFSK.name)
-        )
-    }
-
-    FullscreenPreference(
-        title = "Modulation Type",
-        items = modulationType,
-        selectedItem = preference.modulationType.toString(),
-        onItemSelected = {
-            viewModel.updatePreference { it.copy(modulationType = ModulationType.valueOf(it.toString())) }
-        },
-        onNavigateBack = {}
-    )
 }
