@@ -38,8 +38,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        api-level: [26, 28, 29]
-        target: [default, google_apis]
+        api-level: [26, 32]
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
@@ -59,6 +58,12 @@ jobs:
         with:
           emulator-build: 7425822
           api-level: ${{ matrix.api-level }}
-          target: ${{ matrix.target }}
           arch: x86_64
           script: ./gradlew connectedCheck --no-daemon --stacktrace
+          
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: ${{ env.SAMPLE_PATH }}/app/build/reports/androidTests
