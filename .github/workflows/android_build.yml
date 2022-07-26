@@ -43,25 +43,20 @@ jobs:
           java-version: 11
       - name: Checkout Branch
         uses: actions/checkout@v2
-      
-      - name: Restore Cache
-        uses: actions/cache@v2
-        with: 
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-            restore-keys: |
-              ${{ runner.os }}-gradle-
-
+        
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle-
+          
       - name: Run UI Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
+          emulator-build: 7425822
           api-level: ${{ matrix.api-level }}
           arch: x86_64
           script: ./gradlew connectedDebugAndroidTest
-          
-          
           
       - name: Upload test reports
         if: always()
@@ -69,3 +64,4 @@ jobs:
         with:
           name: test-reports
           path: ${{ env.SAMPLE_PATH }}/app/build/reports/androidTests
+          
