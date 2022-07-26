@@ -43,9 +43,9 @@ jobs:
           java-version: 11
       - name: Checkout Branch
         uses: actions/checkout@v2
-        
+      
       - name: Restore Cache
-      - uses: actions/cache@v2
+        uses: actions/cache@v2
         with: 
           path: |
             ~/.gradle/caches
