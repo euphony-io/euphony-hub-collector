@@ -65,5 +65,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-reports
-          path: ${{ env.SAMPLE_PATH }}/app/build/reports/androidTests
+          path: ./app/build/reports/androidTests
           
