@@ -4,10 +4,13 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.performTextInput
-import co.jbear.euphony_hub.MainActivity
+import androidx.test.platform.app.InstrumentationRegistry
+import co.jbear.euphony_hub.data.repository.PreferenceRepository
+import co.jbear.euphony_hub.presentation.collector.CollectorViewModel
+import co.jbear.euphony_hub.ui.theme.EuphonyHubTheme
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -16,7 +19,16 @@ import org.junit.Test
 class CollectorViewTest {
 
     @get:Rule
-    val composeTestRule = createAndroidComposeRule(MainActivity::class.java)
+    val composeTestRule = createComposeRule()
+
+    @Before
+    fun setup() {
+        composeTestRule.setContent {
+            EuphonyHubTheme() {
+                CollectorView(viewModel = CollectorViewModel(PreferenceRepository(InstrumentationRegistry.getInstrumentation().targetContext)))
+            }
+        }
+    }
 
     @Test
     fun assertThatCollectorViewComponentsIsDisplayed() {
@@ -29,16 +41,6 @@ class CollectorViewTest {
         composeTestRule.onNode(hasTestTag("textToSend"), useUnmergedTree = true)
             .performTextInput("Hello")
         composeTestRule.onNode(hasTestTag("speakerButton"), useUnmergedTree = true)
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun assertThatPauseButtonIsDisplayed() {
-        composeTestRule.onNode(hasTestTag("textToSend"), useUnmergedTree = true)
-            .performTextInput("Hello")
-        composeTestRule.onNode(hasTestTag("speakerButton"), useUnmergedTree = true)
-            .performClick()
-        composeTestRule.onNode(hasTestTag("pauseButton"), useUnmergedTree = true)
             .assertIsDisplayed()
     }
 }
