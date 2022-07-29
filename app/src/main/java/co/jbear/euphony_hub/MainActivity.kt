@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
     private val requestPermissionsLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             if (!permissions.entries.all { it.value }) {
-                Toast.makeText(applicationContext, "You should get permissions to use euphony-hub", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "You should get permissions to use euphony-hub-collector", Toast.LENGTH_LONG).show()
                 finish()
             }
         }
