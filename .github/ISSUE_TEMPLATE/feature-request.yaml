@@ -1,9 +1,7 @@
 name: "💡 Feature Request"
 description: Request an idea for this project
 title: "💡 [Request] <title>"
-labels: [
-  "Feature Proposal"
-]
+labels: "feature proposal"
 body:
   - type: checkboxes
     attributes:
