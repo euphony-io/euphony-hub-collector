@@ -6,18 +6,18 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
-        android:name="co.jbear.euphony_hub_collector.EuphonyHub"
+        android:name="co.jbear.euphony_hub_collector.EuphonyHubCollector"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EuphonyHub">
+        android:theme="@style/Theme.EuphonyHubCollector">
         <activity
             android:name="co.jbear.euphony_hub_collector.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.EuphonyHub">
+            android:theme="@style/Theme.EuphonyHubCollector">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -42,7 +42,7 @@ fun ResultView(
         item {
             SettingCategory(
                 modifier = Modifier.padding(bottom = 20.dp),
-                text = "Euphony Hub Result"
+                text = "Euphony Hub Collector Result"
             )
         }
         items(logs) { log ->
