@@ -4,17 +4,28 @@
 
 <!-- Explain the **motivation** for making this change. What existing problem does the pull request solve? -->
 
-## Changelog
+#### What type of PR is this?
+<!--
+Add one of the following kinds:
+/kind bug
+/kind test
+/kind style
+/kind chore
+/kind feature
+/kind refactor
+/kind documentation
+-->
 
-<!-- Help reviewers and the release process by writing your own changelog entry. For an example, see:
-https://reactnative.dev/contributing/changelogs-in-pull-requests -->
+#### What this PR does / why we need it:
 
-[CATEGORY] [TYPE] - Message
+#### Which issue(s) this PR fixes:
+<!--
+*Automatically closes linked issue when PR is merged.
+Usage: `Fixes #<issue number>`, or `Fixes (paste link of issue)`.
+_If PR is about `failing-tests or flakes`, please post the related issues/tests in a comment and do not use `Fixes`_*
+-->
+Fixes #
 
 ## Test Plan
 
 <!-- Demonstrate the code is solid. Example: The exact commands you ran and their output, screenshots / videos if the pull request changes the user interface. -->
-
-## Related issues/PRs
-
-<!-- If you haven't already, link to issues/PRs that are related to this change. This helps us develop the context and keep a rich repo history. If this PR is a continuation of a past PR's work, link to that PR. If the PR addresses part of the problem in a meta-issue, mention that issue. -->
