@@ -7,12 +7,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.euphony.rx.AcousticSensor
+import co.euphony.rx.EuRxManager
+import co.euphony.tx.EuTxManager
 import co.jbear.euphony_hub_collector.data.repository.PreferenceRepository
 import co.jbear.euphony_hub_collector.domain.entity.AppPreference
 import dagger.hilt.android.lifecycle.HiltViewModel
-import euphony.lib.receiver.AcousticSensor
-import euphony.lib.receiver.EuRxManager
-import euphony.lib.transmitter.EuTxManager
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -61,8 +61,8 @@ class CollectorViewModel @Inject constructor(
             _speakRequest.postValue(textToSend)
             _isSpeaking.postValue(true)
 
-            txManager.euInitTransmit(textToSend)
-            txManager.process(-1)
+            txManager.code = textToSend
+            txManager.play(-1)
         } else {
             _isProcessing.postValue(false)
             _isSpeaking.postValue(false)
