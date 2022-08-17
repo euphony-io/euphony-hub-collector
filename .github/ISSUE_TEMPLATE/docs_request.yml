@@ -1,8 +1,8 @@
-name: 'Docs Request for an Update or Improvement'
+name: '📚 Documentation'
 description: A request to update or improve euphony-hub-collector documentation
 title: 'Docs: '
 labels:
-  - 'template: documentation'
+  - 'documentation'
 body:
   - type: textarea
     attributes:
