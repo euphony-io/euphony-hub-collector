@@ -16,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import co.jbear.euphony_hub_collector.R
 import co.jbear.euphony_hub_collector.data.repository.PreferenceRepository
 import co.jbear.euphony_hub_collector.presentation.collector.CollectorViewModel
 import co.jbear.euphony_hub_collector.ui.components.CustomTextField
@@ -32,23 +34,24 @@ import com.ramcosta.composedestinations.annotation.Destination
 fun CollectorView(
     viewModel: CollectorViewModel = hiltViewModel()
 ) {
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Header()
+        Spacer(modifier = Modifier.height(40.dp))
         Speaker(viewModel)
+        Spacer(modifier = Modifier.height(100.dp))
+        Listener(viewModel)
     }
-    Listener(viewModel)
 }
 
 @Composable
 private fun Header() {
     Text(
         modifier = Modifier.padding(top = 80.dp),
-        text = "Euphony Hub Collector",
+        text = stringResource(R.string.header_title),
         style = MaterialTheme.typography.h3
     )
 
@@ -58,9 +61,7 @@ private fun Header() {
             start = 30.dp,
             end = 30.dp,
         ),
-        text = "Euphony Hub Collector provides both speaker and listener mode, \n" +
-               "so you can send data using euphony and get the result. \n" +
-               "To send clearly, please set device volume to max.",
+        text = stringResource(R.string.header_description),
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.body1
     )
@@ -68,7 +69,7 @@ private fun Header() {
 
 @Composable
 private fun Speaker(viewModel: CollectorViewModel) {
-    val isListening by viewModel.isListening.observeAsState(false)
+    val isProcessing by viewModel.isProcessing.observeAsState(false)
     var textToSend by rememberSaveable { mutableStateOf("") }
 
     CustomTextField(
@@ -77,20 +78,20 @@ private fun Speaker(viewModel: CollectorViewModel) {
         trailingIcon = {
             if (textToSend.isNotEmpty()) {
                 IconButton(onClick = {
-                    viewModel.listen()
-                    viewModel.speak(textToSend)
+                    when(isProcessing) {
+                        false -> viewModel.process(textToSend)
+                        true -> viewModel.stop()
+                    }
                 }) {
-                    if (isListening) {
-                        Icon(Icons.Outlined.PauseCircleFilled, "", tint = Color.Black, modifier = Modifier.testTag("pauseButton"))
-                    } else {
-                        Icon(Icons.Outlined.SpeakerPhone, "", tint = Color.Black, modifier = Modifier.testTag("speakerButton"))
+                    when(isProcessing) {
+                        true -> Icon(Icons.Outlined.PauseCircleFilled, "", tint = Color.Black, modifier = Modifier.testTag("pauseButton"))
+                        false -> Icon(Icons.Outlined.SpeakerPhone, "", tint = Color.Black, modifier = Modifier.testTag("speakerButton"))
                     }
                 }
             }
         },
         modifier = Modifier
             .testTag("textToSend")
-            .padding(top = 40.dp)
             .width(300.dp)
             .height(48.dp)
     )
@@ -101,37 +102,25 @@ private fun Listener(viewModel: CollectorViewModel) {
     val isProcessing by viewModel.isProcessing.observeAsState(false)
     val listenResult by viewModel.listenResult.observeAsState("")
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (isProcessing) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .size(80.dp),
-                color = SkyBlue,
-                strokeWidth = 10.dp
-            )
-        } else if (listenResult.isNotEmpty()) {
-            val color = if (viewModel.getResult().equals("SUCCESS")) {
-                SkyBlue
-            } else {
-                Color.Red
-            }
-
-            Text(
-                text = viewModel.getResult(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.h3,
-                color = color
-            )
-            Text(
-                text = "\"$listenResult\"",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.body2
-            )
-        }
+    if (isProcessing) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .size(80.dp),
+            color = SkyBlue,
+            strokeWidth = 10.dp
+        )
+    } else if (listenResult.isNotEmpty()) {
+        Text(
+            text = if (viewModel.isSuccess()) stringResource(R.string.result_success) else stringResource(R.string.result_fail),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h3,
+            color = if (viewModel.isSuccess()) SkyBlue else Color.Red
+        )
+        Text(
+            text = "\"$listenResult\"",
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.body2
+        )
     }
 }
 
