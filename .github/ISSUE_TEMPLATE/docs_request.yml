@@ -1,6 +1,6 @@
 name: '📚 Documentation'
 description: A request to update or improve euphony-hub-collector documentation
-title: 'Docs: '
+title: "[Documentation] <title>"
 labels:
   - 'documentation'
 body:
