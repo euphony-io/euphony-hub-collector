@@ -7,7 +7,7 @@ body:
   - type: textarea
     attributes:
       label: What is the improvement or update you wish to see?
-      description: 'Example : I want more detailed explanation of project setup <etc>'
+      description: 'Ex. I want more detailed explanation of project setup.'
     validations:
       required: true
   - type: textarea
