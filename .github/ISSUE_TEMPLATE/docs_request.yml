@@ -1,8 +1,8 @@
 name: '📚 Documentation'
 description: A request to update or improve euphony-hub-collector documentation
 title: "[Documentation] <title>"
-labels:
-  - 'documentation'
+labels: "documentation"
+
 body:
   - type: textarea
     attributes:
