@@ -1,5 +1,7 @@
 package co.jbear.euphony_hub_collector.ui.components
 
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.lifecycle.MutableLiveData
@@ -12,9 +14,14 @@ import co.jbear.euphony_hub_collector.util.Constants.TAG_RESULT_SUCCESS
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnitRunner
 
+@ExperimentalMaterialApi
+@ExperimentalComposeUiApi
+@RunWith(MockitoJUnitRunner::class)
 class TxRxCheckerTest {
 
     @get:Rule
@@ -29,7 +36,6 @@ class TxRxCheckerTest {
 
     @Before
     fun setup() {
-        viewModel = mock(TxRxCheckerViewModel::class.java)
         `when`(viewModel.isProcessing).thenReturn(isProcessing)
         `when`(viewModel.txCode).thenReturn(txCode)
         `when`(viewModel.rxCode).thenReturn(rxCode)
