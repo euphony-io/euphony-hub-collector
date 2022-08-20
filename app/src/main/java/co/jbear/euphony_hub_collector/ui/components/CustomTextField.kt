@@ -13,10 +13,11 @@ import co.jbear.euphony_hub_collector.ui.theme.Typography
 
 @Composable
 fun CustomTextField(
+    modifier: Modifier = Modifier,
     text: String,
     onTextChanged: (String) -> Unit,
+    enabled: Boolean = true,
     trailingIcon: @Composable()(() -> Unit),
-    modifier: Modifier = Modifier,
 ) {
     TextField(
         modifier = modifier,
@@ -26,6 +27,7 @@ fun CustomTextField(
             backgroundColor = LightSkyBlue,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
             cursorColor = Color.Black
         ),
         placeholder = {
@@ -34,6 +36,7 @@ fun CustomTextField(
                 style = Typography.body1
             )
         },
+        enabled = enabled,
         value = text,
         onValueChange = { onTextChanged(it) },
         singleLine = true
