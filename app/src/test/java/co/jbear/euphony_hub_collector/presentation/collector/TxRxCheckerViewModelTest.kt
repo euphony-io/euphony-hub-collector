@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import co.euphony.rx.AcousticSensor
 import co.euphony.rx.EuRxManager
 import co.euphony.tx.EuTxManager
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -21,13 +21,13 @@ import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-@OptIn(DelicateCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class TxRxCheckerViewModelTest {
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    val mainThreadSurrogate = newSingleThreadContext(TxRxCheckerViewModelTest::class.java.simpleName)
+    val dispatcher = UnconfinedTestDispatcher()
 
     private lateinit var viewModel: TxRxCheckerViewModel
 
@@ -41,7 +41,7 @@ class TxRxCheckerViewModelTest {
     @Before
     fun setup() {
         viewModel = TxRxCheckerViewModel(txManager, rxManager)
-        Dispatchers.setMain(mainThreadSurrogate)
+        Dispatchers.setMain(dispatcher)
     }
 
     @After
@@ -89,8 +89,8 @@ class TxRxCheckerViewModelTest {
         `when`(rxManager.acousticSensor).thenAnswer {
             AcousticSensor {
                 viewModel.stop()
-                viewModel.rxCode.postValue(rxResult)
-                viewModel.isProcessing.postValue(false)
+                viewModel.setRxCode(rxResult)
+                viewModel.setIsProcessing(false)
             }
         }
         rxManager.acousticSensor.notify(rxResult)
@@ -109,8 +109,8 @@ class TxRxCheckerViewModelTest {
         `when`(rxManager.acousticSensor).thenAnswer {
             AcousticSensor {
                 viewModel.stop()
-                viewModel.rxCode.postValue(rxResult)
-                viewModel.isProcessing.postValue(false)
+                viewModel.setRxCode(rxResult)
+                viewModel.setIsProcessing(false)
             }
         }
         rxManager.acousticSensor.notify(rxResult)
