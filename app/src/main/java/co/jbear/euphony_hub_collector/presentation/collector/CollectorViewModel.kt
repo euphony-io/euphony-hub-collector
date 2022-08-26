@@ -25,12 +25,6 @@ class CollectorViewModel @Inject constructor(
     var preference by mutableStateOf(AppPreference())
         private set
 
-    private val _isSpeaking = MutableLiveData(false)
-    val isSpeaking get() = _isSpeaking
-
-    private val _isListening = MutableLiveData(false)
-    val isListening get() = _isListening
-
     private val _isProcessing = MutableLiveData(false)
     val isProcessing get() = _isProcessing
 
@@ -54,46 +48,34 @@ class CollectorViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun speak(textToSend: String) {
-        if (isSpeaking.value == false) {
-            _isProcessing.postValue(true)
-            _listenResult.postValue("")
-            _speakRequest.postValue(textToSend)
-            _isSpeaking.postValue(true)
+    fun process(textToSend: String) {
+        _listenResult.postValue("")
+        _speakRequest.postValue(textToSend)
+        _isProcessing.postValue(true)
 
-            txManager.code = textToSend
-            txManager.play(-1)
-        } else {
+        rxManager.listen()
+        txManager.code = textToSend
+        txManager.play(-1)
+
+        rxManager.acousticSensor = AcousticSensor {
+            stop()
+            _listenResult.postValue(it)
             _isProcessing.postValue(false)
-            _isSpeaking.postValue(false)
-            txManager.stop()
         }
     }
 
-    fun listen() {
-        if (isListening.value == true) {
-            rxManager.finish()
-            _isProcessing.postValue(false)
-            _isListening.postValue(false)
-        } else {
-            rxManager.listen()
-            _isProcessing.postValue(true)
-            _isListening.postValue(true)
-            rxManager.acousticSensor = AcousticSensor {
-                _listenResult.postValue(it)
-                _isListening.postValue(false)
-                _isSpeaking.postValue(false)
-                _isProcessing.postValue(false)
-                txManager.stop()
-            }
-        }
+    fun stop() {
+        _isProcessing.postValue(false)
+        txManager.stop()
+        rxManager.finish()
     }
 
-    fun getResult(): String {
+
+    fun isSuccess(): Boolean {
         if (speakRequest.value.equals(listenResult.value)) {
-            return "SUCCESS"
+            return true
         }
-        return "FAIL"
+        return false
     }
 
     companion object {

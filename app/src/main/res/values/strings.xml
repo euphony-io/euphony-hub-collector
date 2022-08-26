@@ -3,4 +3,12 @@
     <string name="collector_view">Collector</string>
     <string name="result_view">Result</string>
     <string name="setting_view">Setting</string>
+    <string name="header_title">Euphony Hub Collector</string>
+    <string name="header_description">
+        Euphony Hub Collector provides both speaker and listener mode, \n
+        so you can send data using euphony and get the result. \n
+        To send clearly, please set device volume to max.
+    </string>
+    <string name="result_success">SUCCESS</string>
+    <string name="result_fail">FAIL</string>
 </resources>
