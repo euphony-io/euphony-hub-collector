@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.jbear.euphony_hub_collector">
+    package="co.euphony.euphony_hub_collector">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
-        android:name="co.jbear.euphony_hub_collector.EuphonyHubCollector"
+        android:name="co.euphony.euphony_hub_collector.EuphonyHubCollector"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EuphonyHubCollector">
         <activity
-            android:name="co.jbear.euphony_hub_collector.MainActivity"
+            android:name="co.euphony.euphony_hub_collector.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.EuphonyHubCollector">
